@@ -65,8 +65,18 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         val (q1, q2, q3) = event.values.take(3).map { it.toDouble() }
         val q0 = sqrt(1 - q1*q1 - q2*q2 - q3*q3)
 
-        x = atan2(2 * (q2*q3 + q0*q1), q3*q3 - q2*q2 - q1*q1 + q0*q0)
-        y = -asin(2*q1*q3 - 2*q0*q2)
-        z = atan2(2*q1*q2 + 2*q0*q3, q1*q1 + q0*q0 - q3*q3 - q2*q2)
+        if (MODE) {
+            x = atan2(2 * (q0*q1 + q2*q3), 1 - 2 * (q1*q1 + q2*q2))
+            y = asin(2 * (q0*q2 - q1*q3))
+            z = atan2(2 * (q0*q3 + q1*q2), 1 - 2 * (q2*q2 + q3*q3))
+        } else {
+            x = atan2(2 * (q0*q3 - q1*q2), q1*q1 + q0*q0 - q3*q3 - q2*q2)
+            y = asin(2 * (q1*q3 + q0*q2))
+            z = atan2(2 * (-q2*q3 + q0*q1), q3*q3 - q2*q2 - q1*q1 + q0*q0)
+        }
+    }
+
+    companion object {
+        private const val MODE = true
     }
 }
